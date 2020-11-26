@@ -1,29 +1,37 @@
 # do not forget to require your gem dependencies
 # do not forget to require_relative your local dependencies
+require_relative "presenter"
+require_relative "requester"
+require_relative "random_trivia"
+require_relative "random_trivia_controller"
 
 class TriviaGenerator
   # maybe we need to include a couple of modules?
+  include Presenter
+  include Requester
+  include RandomTrivia
 
-  def initialize
-    # we need to initialize a couple of properties here
-  end
+  # def initialize(filename = "score.json", questions, score)
+  #   # we need to initialize a couple of properties here
+  #   @filename = filename
+  #   @questions = []
+  #   @score = user_score
+  # end
 
   def start
     # welcome message
+    print_welcome
     # prompt the user for an action
+    action = select_main_menu_action
     # keep going until the user types exit
-  end
-
-  def random_trivia
-    # load the questions from the api
-    # questions are loaded, then let's ask them
-  end
-
-  def ask_questions
-    # ask each question
-    # if response is correct, put a correct message and increase score
-    # if response is incorrect, put an incorrect message, and which was the correct answer 
-    # once the questions end, show user's score and promp to save it
+    until action == "exit"
+      case action
+      when "random" then random_trivia
+      when "scores" then scores
+      end
+      print_welcome
+      action = select_main_menu_action
+    end
   end
 
   def save(data)
@@ -32,15 +40,6 @@ class TriviaGenerator
 
   def parse_scores
     # get the scores data from file
-  end
-
-  def load_questions
-    # ask the api for a random set of questions
-    parse_questions
-  end
-
-  def parse_questions
-    # questions came with an unexpected structure, clean them to make it usable for our purposes
   end
 
   def print_scores
