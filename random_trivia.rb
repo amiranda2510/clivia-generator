@@ -1,8 +1,10 @@
 require_relative "random_trivia_controller"
 require_relative "requester"
+require_relative "presenter"
 
 module RandomTrivia
   include Requester
+  include Presenter
 
   def random_trivia
     load_questions
@@ -18,14 +20,14 @@ module RandomTrivia
       end
       input = gets_answer_to_question
 
-      # if response is correct, put a correct message and increase score
-      if input == question[:correct_answer]
-        puts "#{input}... Correct!"
+      if @options[input] == question[:correct_answer]
+        print_correct_option(@options[input])
+        @score += 10
       else
-        puts "#{input}... Incorrect!"
-        puts "The correct answer was: #{question[:correct_answer]}"
+        print_incorrect_option(@options[input], question[:correct_answer])
       end
     end
+    will_save?(@score)
     # once the questions end, show user's score and promp to save it
   end
 
@@ -38,7 +40,7 @@ module RandomTrivia
 
   def questions_options(question)
     options = question[:incorrect_answers] << question[:correct_answer]
-    options.shuffle!
+    @options = options.shuffle!
   end
 
   def parse_questions

@@ -1,4 +1,10 @@
+require_relative "presenter"
+require_relative "scores"
+
 module Requester
+  include Presenter
+  include Scores
+
   def select_main_menu_action
     # prompt the user for the "random | scores | exit" actions
     prompt = "random | scores | exit"
@@ -7,10 +13,11 @@ module Requester
   end
 
   def will_save?(score)
-    # show user's score
-    # ask the user to save the score
-    # grab user input
-    # prompt the user to give the score a name if there is no name given, set it as Anonymous
+    print_score(score)
+    puts "--------------------------------------------------"
+    puts "Do you want to save your score? y/n"
+    input = gets.chomp.strip.downcase
+    save(score) if input == "y"
   end
 
   def get_number(max: 100_000)

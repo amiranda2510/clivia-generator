@@ -11,12 +11,12 @@ class TriviaGenerator
   include Requester
   include RandomTrivia
 
-  # def initialize(filename = "score.json", questions, score)
-  #   # we need to initialize a couple of properties here
-  #   @filename = filename
-  #   @questions = []
-  #   @score = user_score
-  # end
+  def initialize(filename = "score.json")
+    # we need to initialize a couple of properties here
+    @score = 0
+    @questions = []
+    @filename = filename
+  end
 
   def start
     # welcome message
@@ -32,10 +32,6 @@ class TriviaGenerator
       print_welcome
       action = select_main_menu_action
     end
-  end
-
-  def save(data)
-    # write to file the scores data
   end
 
   def parse_scores
