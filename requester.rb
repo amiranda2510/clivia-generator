@@ -6,13 +6,6 @@ module Requester
     gets_option(prompt, options)
   end
 
-  def ask_question(question)
-    # show category and difficulty from question
-    # show the question
-    # show each one of the options
-    # grab user input
-  end
-
   def will_save?(score)
     # show user's score
     # ask the user to save the score
@@ -37,5 +30,15 @@ module Requester
       input = gets.chomp.strip
     end
     input
+  end
+
+  def ask_question(question)
+    puts "Category: #{question[:category]} | Difficulty: #{question[:difficulty]}"
+    puts "Question: #{question[:question]}"
+  end
+
+  def gets_answer_to_question
+    print ">"
+    gets.chomp.strip.to_i - 1
   end
 end

@@ -1,6 +1,9 @@
 require_relative "random_trivia_controller"
+require_relative "requester"
 
 module RandomTrivia
+  include Requester
+
   def random_trivia
     load_questions
     ask_questions
@@ -10,16 +13,20 @@ module RandomTrivia
     # ask each question
     @questions.each do |question|
       ask_question(question)
-      questions_options(question)
-    end
-    # if response is correct, put a correct message and increase score
-    # if response is incorrect, put an incorrect message, and which was the correct answer
-    # once the questions end, show user's score and promp to save it
-  end
+      questions_options(question).each_with_index do |option, index|
+        puts "#{index + 1}.#{option}"
+      end
+      input = gets_answer_to_question
 
-  def ask_question(question)
-    puts "Category: #{question[:category]} | Difficulty: #{question[:difficulty]}"
-    puts "Question: #{question[:question]}"
+      # if response is correct, put a correct message and increase score
+      if input == question[:correct_answer]
+        puts "#{input}... Correct!"
+      else
+        puts "#{input}... Incorrect!"
+        puts "The correct answer was: #{question[:correct_answer]}"
+      end
+    end
+    # once the questions end, show user's score and promp to save it
   end
 
   def load_questions
